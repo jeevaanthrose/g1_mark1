@@ -2,13 +2,13 @@
 
 A custom development project focused on the simulation and keyboard-based teleoperation of a **12-DOF Unitree G1 humanoid robot** using **MuJoCo**.
 
-This repository contains the custom files and development work for **G1 Mark 1**, including a 12-DOF robot model, MuJoCo configuration, and WASD-based teleoperation.
+This repository contains the custom development work for **G1 Mark 1**, including the 12-DOF robot model, MuJoCo configuration, and WASD-based teleoperation.
 
 ---
 
 ## 🚀 Project Overview
 
-**G1 Mark 1** is a custom humanoid robotics development project built around the **Unitree G1 humanoid robot**.
+**G1 Mark 1** is a custom humanoid robotics development project focused on building and experimenting with a **12-DOF Unitree G1 humanoid robot** in simulation.
 
 The current implementation focuses on:
 
@@ -18,7 +18,8 @@ The current implementation focuses on:
 * Custom G1 12-DOF robot description
 * URDF and MuJoCo XML models
 * Custom deployment configuration
-* Foundation for future LiDAR, SLAM, and autonomous navigation development
+* Foundation for future LiDAR integration
+* Foundation for SLAM and autonomous navigation development
 
 The project is currently under active development.
 
@@ -31,12 +32,13 @@ The project is currently under active development.
 * ✅ WASD keyboard teleoperation
 * ✅ Forward and backward movement
 * ✅ Left and right movement
-* ✅ Custom robot configuration
-* ✅ Custom URDF model
+* ✅ Custom G1 configuration
+* ✅ Custom URDF robot description
 * ✅ Custom MuJoCo XML model
 * 🔄 LiDAR integration and development
-* 🔄 SLAM development
+* 🔄 SLAM implementation and improvements
 * 🔄 Autonomous navigation
+* 🔄 ROS 2 integration
 
 ---
 
@@ -53,21 +55,23 @@ g1_mark1/
 │       ├── g1_12dof_wasd.py
 │       └── g1_12dof_wasd_WORKING_BACKUP.py
 │
-└── src/
-    └── g1_description/
-        ├── g1_12dof.urdf
-        └── g1_12dof.xml
+├── src/
+│   └── g1_description/
+│       ├── g1_12dof.urdf
+│       └── g1_12dof.xml
+│
+└── README.md
 ```
 
 ### Key Files
 
-| File                              | Description                                        |
-| --------------------------------- | -------------------------------------------------- |
-| `g1_12dof_wasd.py`                | Main 12-DOF G1 MuJoCo teleoperation script         |
-| `g1_12dof_wasd_WORKING_BACKUP.py` | Backup of the working teleoperation implementation |
-| `g1.yaml`                         | G1 deployment and simulation configuration         |
-| `g1_12dof.xml`                    | MuJoCo model description                           |
-| `g1_12dof.urdf`                   | URDF robot description                             |
+| File                              | Description                                                       |
+| --------------------------------- | ----------------------------------------------------------------- |
+| `g1_12dof_wasd.py`                | Main 12-DOF G1 MuJoCo simulation and WASD teleoperation script    |
+| `g1_12dof_wasd_WORKING_BACKUP.py` | Backup of the working G1 12-DOF WASD teleoperation implementation |
+| `g1.yaml`                         | G1 deployment and simulation configuration                        |
+| `g1_12dof.xml`                    | MuJoCo XML model description of the G1 12-DOF robot               |
+| `g1_12dof.urdf`                   | URDF description of the G1 12-DOF robot                           |
 
 ---
 
@@ -90,73 +94,141 @@ The project was developed and tested using a Python virtual environment named:
 g1_rl_env
 ```
 
+The custom G1 Mark 1 code is maintained separately from the underlying Unitree framework.
+
 ---
 
 ## 🔗 Base Framework
 
-G1 Mark 1 is developed using the **Unitree RL Gym framework** as the underlying robotics and reinforcement-learning environment.
+G1 Mark 1 uses the **Unitree RL Gym framework** as the underlying robotics and reinforcement-learning environment.
 
-The original framework is available here:
+The official framework is available here:
 
 **Official Unitree RL Gym Repository**
 
 https://github.com/unitreerobotics/unitree_rl_gym
 
-This repository contains the **custom G1 Mark 1 development work** built on top of the underlying framework.
+This repository contains the **custom G1 Mark 1 development work** built using the underlying framework.
+
+The official Unitree repository is not included in this repository. Users should obtain the required framework separately.
 
 ---
 
-## ⚙️ Setup
+# ⚙️ Setup
 
-Clone the official Unitree RL Gym framework:
+## 1. Clone the Official Unitree RL Gym Framework
+
+Clone the official framework:
 
 ```bash
 git clone https://github.com/unitreerobotics/unitree_rl_gym.git
 ```
 
-Enter the framework directory:
+The default location used in this project is:
 
-```bash
-cd unitree_rl_gym
+```text
+~/unitree_rl_gym
 ```
 
-Activate your Python environment:
+The `legged_gym` package required by the G1 Mark 1 deployment script is provided by this framework.
+
+---
+
+## 2. Clone the G1 Mark 1 Repository
+
+Clone this repository:
+
+```bash
+git clone https://github.com/jeevaanthrose/g1_mark1.git
+```
+
+The default project location used in this documentation is:
+
+```text
+~/g1_mark1
+```
+
+---
+
+## 3. Activate the Python Environment
+
+Activate the environment used for the project:
 
 ```bash
 source ~/g1_rl_env/bin/activate
 ```
 
-Clone or copy the G1 Mark 1 project files into the corresponding directories of the Unitree RL Gym environment.
+Verify that the environment is active:
+
+```bash
+which python
+```
+
+The terminal should show the Python interpreter associated with the `g1_rl_env` environment.
 
 ---
 
-## 🎮 Running G1 Mark 1
+# 🚀 Running G1 Mark 1
 
-After setting up the Unitree RL Gym environment and placing the G1 Mark 1 files in the appropriate locations, run:
+Navigate to the G1 Mark 1 project:
 
 ```bash
-cd ~/unitree_rl_gym
+cd ~/g1_mark1
 ```
 
-Activate the environment:
+Activate the Python environment:
 
 ```bash
 source ~/g1_rl_env/bin/activate
 ```
 
-Run the 12-DOF G1 WASD teleoperation:
+Run the G1 12-DOF MuJoCo simulation with WASD teleoperation:
 
 ```bash
-PYTHONPATH=$PWD python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
+PYTHONPATH=$HOME/unitree_rl_gym:$PWD python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
 ```
 
-The G1 humanoid robot will launch in the MuJoCo simulation environment.
+The command uses:
+
+```text
+~/g1_mark1
+        │
+        └── Your custom G1 Mark 1 code
+
+~/unitree_rl_gym
+        │
+        └── Unitree framework and legged_gym dependency
+```
+
+The `PYTHONPATH` configuration allows the custom G1 Mark 1 project to access the required `legged_gym` package from the official Unitree RL Gym framework.
 
 ---
 
-## 🎮 Teleoperation
+## 🖥️ Expected Result
 
-The G1 Mark 1 system supports keyboard-based teleoperation using the WASD control interface.
+After successfully launching the script, the **MuJoCo simulation window** should open with the **G1 12-DOF humanoid robot** loaded.
+
+The robot can then be controlled using the WASD keyboard teleoperation interface.
+
+A successful run should result in:
+
+```text
+G1 12-DOF Humanoid Robot
+        │
+        ▼
+MuJoCo Simulation
+        │
+        ▼
+WASD Keyboard Teleoperation
+```
+
+> **Note:** The exact terminal output may vary depending on the current implementation and configuration. The main indication of successful execution is that the MuJoCo simulation window launches and the G1 humanoid robot is displayed.
+
+---
+
+# 🎮 WASD Teleoperation
+
+Once the MuJoCo simulation is running, use the keyboard to control the robot.
 
 | Key | Action        |
 | --- | ------------- |
@@ -165,51 +237,149 @@ The G1 Mark 1 system supports keyboard-based teleoperation using the WASD contro
 | `A` | Move Left     |
 | `D` | Move Right    |
 
-Additional controls may depend on the current implementation of the teleoperation script.
+The robot responds to keyboard commands through the custom G1 Mark 1 WASD teleoperation implementation.
 
 ---
 
-## 🧠 Development Roadmap
+# 🧠 System Architecture
+
+The current G1 Mark 1 system is structured as follows:
+
+```text
+                 G1 MARK 1
+                     │
+                     ▼
+          Custom 12-DOF G1 Model
+                     │
+                     ▼
+             MuJoCo Simulation
+                     │
+                     ▼
+          Custom WASD Teleoperation
+                     │
+          ┌──────────┼──────────┐
+          │          │          │
+          ▼          ▼          ▼
+          W          A          D
+       Forward      Left      Right
+          │
+          ▼
+          S
+       Backward
+```
+
+The project is designed as a foundation for integrating additional perception and autonomy capabilities.
+
+---
+
+# 🤖 Robot Description
+
+The G1 Mark 1 repository contains custom 12-DOF robot descriptions in two formats.
+
+### MuJoCo Model
+
+```text
+src/g1_description/g1_12dof.xml
+```
+
+Used for:
+
+* MuJoCo simulation
+* Robot dynamics
+* Joint configuration
+* Simulation environment
+
+### URDF Model
+
+```text
+src/g1_description/g1_12dof.urdf
+```
+
+Used as the robot description for future robotics and ROS-based integration.
+
+---
+
+# 🔬 Development Roadmap
 
 The project is under active development.
 
-### Completed
+## Completed
 
 * [x] G1 12-DOF robot model
 * [x] MuJoCo simulation
-* [x] WASD teleoperation
-* [x] Custom deployment configuration
-* [x] Custom URDF and MuJoCo XML models
+* [x] WASD keyboard teleoperation
+* [x] Custom G1 deployment configuration
+* [x] Custom URDF robot description
+* [x] Custom MuJoCo XML model
+* [x] Clean standalone G1 Mark 1 repository
 
-### In Development
+## In Development
 
 * [ ] LiDAR integration
 * [ ] SLAM implementation
-* [ ] Map generation improvements
+* [ ] SLAM map improvements
 * [ ] Autonomous navigation
 * [ ] ROS 2 integration
-* [ ] Navigation and path planning
+* [ ] Path planning
+* [ ] Obstacle avoidance
+* [ ] Navigation stack integration
 * [ ] Extended humanoid autonomy
 
 ---
 
-## 📌 Project Status
+# 📌 Project Status
 
-**Current Status:** Active Development
+**Project:** G1 Mark 1
 
-**Current Milestone:** G1 Mark 1 — Working 12-DOF Humanoid Robot WASD Teleoperation
+**Current Milestone:**
+
+> **Working 12-DOF G1 Humanoid Robot with WASD Teleoperation in MuJoCo**
+
+**Status:** Active Development
 
 The current focus is on improving the robot simulation, sensor integration, SLAM capabilities, and autonomous navigation pipeline.
 
 ---
 
-## 👨‍💻 Author
+# 🧪 Development Environment
 
-**Jeeva Anthrose S**
+The project was developed and tested using:
 
-Robotics & Automation Engineer
+```text
+Operating System : Ubuntu Linux
+Python Environment: g1_rl_env
+Robot            : Unitree G1
+Degrees of Freedom: 12-DOF
+Simulator        : MuJoCo
+Control          : WASD Keyboard Teleoperation
+Framework        : Unitree RL Gym / legged_gym
+```
 
-Focused on:
+---
+
+# 🔗 Project Dependencies
+
+G1 Mark 1 is designed to work with the following external framework:
+
+### Unitree RL Gym
+
+Official repository:
+
+https://github.com/unitreerobotics/unitree_rl_gym
+
+The Unitree RL Gym repository provides the underlying `legged_gym` framework used by the G1 Mark 1 deployment script.
+
+Please refer to the official repository for the framework installation requirements and documentation.
+
+---
+
+# 👨‍💻 Author
+
+## Jeeva Anthrose S
+
+**Robotics & Automation Engineer**
+
+Areas of interest:
 
 * Robotics
 * Humanoid Robots
@@ -217,29 +387,69 @@ Focused on:
 * ROS 2
 * SLAM
 * Computer Vision
-* AI & Machine Learning
+* Artificial Intelligence
+* Machine Learning
 * Embedded Systems
+* Robot Simulation
 
 ---
 
-## 📜 Acknowledgements
+# 🙏 Acknowledgements
 
-This project builds upon the work and framework provided by **Unitree Robotics** and the open-source robotics community.
+This project builds upon the work of **Unitree Robotics** and the open-source robotics community.
 
-Special reference:
+Special acknowledgement to the **Unitree RL Gym** project, which provides the underlying framework used in the development of G1 Mark 1.
 
-**Unitree RL Gym**
+Official repository:
 
 https://github.com/unitreerobotics/unitree_rl_gym
 
-The original framework and its respective licenses and attributions belong to their respective authors.
+The original framework, source code, licenses, and attributions belong to their respective authors and contributors.
 
 ---
 
-## 📄 License
+# 📄 License
 
-This project contains custom development work by the author and is built upon external open-source frameworks.
+This repository contains custom development work for the G1 Mark 1 project and relies on external open-source frameworks.
 
-Please refer to the original Unitree RL Gym repository and its license for the underlying framework:
+The underlying Unitree RL Gym framework is maintained separately by its original authors.
+
+Please refer to the official Unitree RL Gym repository and its applicable license for the licensing terms of the underlying framework:
 
 https://github.com/unitreerobotics/unitree_rl_gym
+
+Users are responsible for complying with the licenses and terms of any external dependencies used with this project.
+
+---
+
+# ⭐ Future Vision
+
+The long-term goal of G1 Mark 1 is to develop a more capable humanoid robotics platform combining:
+
+```text
+Humanoid Robot
+      │
+      ▼
+Sensor Integration
+      │
+      ├── LiDAR
+      ├── IMU
+      └── Other Sensors
+      │
+      ▼
+SLAM
+      │
+      ▼
+Environment Mapping
+      │
+      ▼
+Autonomous Navigation
+      │
+      ▼
+Path Planning
+      │
+      ▼
+Humanoid Autonomous System
+```
+
+The project will continue evolving toward advanced perception, mapping, navigation, and autonomous humanoid robotics.
