@@ -7,9 +7,13 @@ import mujoco.viewer
 import numpy as np
 import torch
 import yaml
+import rclpy
+from sensor_msgs.msg import LaserScan
+from geometry_msgs.msg import TransformStamped
+from tf2_ros import TransformBroadcaster
 
 from legged_gym import LEGGED_GYM_ROOT_DIR
-
+import os
 
 # ============================================================
 # Keyboard controller
@@ -312,6 +316,13 @@ if __name__ == "__main__":
 
     print("Policy loaded.")
 
+    # ROS 2 LiDAR publisher
+    rclpy.init(args=None)
+    ros_node = rclpy.create_node("g1_mujoco_lidar")
+    scan_pub = ros_node.create_publisher(LaserScan, "/scan", 10)
+    tf_broadcaster = TransformBroadcaster(ros_node)
+    print("ROS 2 LiDAR publisher started: /scan")
+
     # --------------------------------------------------------
     # Start keyboard controller
     # --------------------------------------------------------
@@ -375,6 +386,71 @@ if __name__ == "__main__":
                 m,
                 d
             )
+
+            # ------------------------------------------------
+            # Dynamic TF: odom -> pelvis
+            # ------------------------------------------------
+
+            odom_tf = TransformStamped()
+            odom_tf.header.stamp = ros_node.get_clock().now().to_msg()
+            odom_tf.header.frame_id = "odom"
+            odom_tf.child_frame_id = "pelvis"
+
+            # MuJoCo floating-base position
+            odom_tf.transform.translation.x = float(d.qpos[0])
+            odom_tf.transform.translation.y = float(d.qpos[1])
+            odom_tf.transform.translation.z = float(d.qpos[2])
+
+            # MuJoCo quaternion order: w, x, y, z
+            # ROS quaternion order: x, y, z, w
+            odom_tf.transform.rotation.w = float(d.qpos[3])
+            odom_tf.transform.rotation.x = float(d.qpos[4])
+            odom_tf.transform.rotation.y = float(d.qpos[5])
+            odom_tf.transform.rotation.z = float(d.qpos[6])
+
+            tf_broadcaster.sendTransform(odom_tf)
+
+            # ------------------------------------------------
+            # LIDAR sensor data
+            # ------------------------------------------------
+
+            if m.nsensordata > 0:
+
+                lidar_data = d.sensordata[:m.nsensordata].copy()
+
+                MAX_RANGE = 10.0
+                MIN_RANGE = 0.05
+
+                lidar_data[lidar_data < 0] = MAX_RANGE
+                lidar_data = np.clip(lidar_data, MIN_RANGE, MAX_RANGE)
+
+                # Publish LiDAR as ROS 2 LaserScan
+                scan = LaserScan()
+                scan.header.stamp = ros_node.get_clock().now().to_msg()
+                scan.header.frame_id = "lidar_link"
+                scan.angle_min = 0.0
+                scan.angle_max = 2.0 * np.pi
+                scan.angle_increment = (2.0 * np.pi) / 180.0
+                scan.time_increment = 0.0
+                scan.scan_time = 0.02
+                scan.range_min = MIN_RANGE
+                scan.range_max = MAX_RANGE
+                scan.ranges = lidar_data.astype(np.float32).tolist()
+                scan.intensities = []
+                scan_pub.publish(scan)
+                rclpy.spin_once(ros_node, timeout_sec=0.0)
+
+                if counter % 100 == 0:
+                    print(
+                        f"\rLIDAR: min={np.min(lidar_data):.3f} m | "
+                        f"max={np.max(lidar_data):.3f} m | "
+                        f"rays={len(lidar_data)}",
+                        end="",
+                        flush=True
+                    )
+
+            elif counter == 1:
+                print("\nWARNING: No LIDAR sensors found in loaded XML.")
 
             counter += 1
 
