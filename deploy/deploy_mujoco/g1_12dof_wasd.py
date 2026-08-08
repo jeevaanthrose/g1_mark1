@@ -10,7 +10,7 @@ import yaml
 import rclpy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import TransformStamped
-from tf2_ros import TransformBroadcaster
+from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
 
 from legged_gym import LEGGED_GYM_ROOT_DIR
 import os
@@ -321,6 +321,30 @@ if __name__ == "__main__":
     ros_node = rclpy.create_node("g1_mujoco_lidar")
     scan_pub = ros_node.create_publisher(LaserScan, "/scan", 10)
     tf_broadcaster = TransformBroadcaster(ros_node)
+
+    # Permanent static TF: pelvis -> lidar_link
+    static_tf_broadcaster = StaticTransformBroadcaster(ros_node)
+
+    lidar_tf = TransformStamped()
+    lidar_tf.header.stamp = ros_node.get_clock().now().to_msg()
+    lidar_tf.header.frame_id = "pelvis"
+    lidar_tf.child_frame_id = "lidar_link"
+
+    # Existing MuJoCo LiDAR mounting position: 0 0 0.20
+    lidar_tf.transform.translation.x = 0.0
+    lidar_tf.transform.translation.y = 0.0
+    lidar_tf.transform.translation.z = 0.20
+
+    # Existing LiDAR orientation: identity
+    lidar_tf.transform.rotation.x = 0.0
+    lidar_tf.transform.rotation.y = 0.0
+    lidar_tf.transform.rotation.z = 0.0
+    lidar_tf.transform.rotation.w = 1.0
+
+    static_tf_broadcaster.sendTransform(lidar_tf)
+
+    print("Permanent LiDAR TF added: pelvis -> lidar_link")
+
     print("ROS 2 LiDAR publisher started: /scan")
 
     # --------------------------------------------------------
@@ -430,7 +454,7 @@ if __name__ == "__main__":
                 scan.header.frame_id = "lidar_link"
                 scan.angle_min = 0.0
                 scan.angle_max = 2.0 * np.pi
-                scan.angle_increment = (2.0 * np.pi) / 180.0
+                scan.angle_increment = (2.0 * np.pi) / 90.0
                 scan.time_increment = 0.0
                 scan.scan_time = 0.02
                 scan.range_min = MIN_RANGE
