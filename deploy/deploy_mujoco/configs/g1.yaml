@@ -1,7 +1,6 @@
 # 
 policy_path: "{LEGGED_GYM_ROOT_DIR}/deploy/pre_train/g1/motion.pt"
-xml_path: "{LEGGED_GYM_ROOT_DIR}/resources/robots/g1_description/scene.xml"
-
+xml_path: "{G1_MARK1_ROOT_DIR}/src/g1_description/g1_12dof.xml"
 # Total simulation time
 simulation_duration: 3600.0
 # Simulation time step
