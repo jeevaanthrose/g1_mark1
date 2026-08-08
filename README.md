@@ -185,7 +185,12 @@ source ~/g1_rl_env/bin/activate
 Run the G1 12-DOF MuJoCo simulation with WASD teleoperation:
 
 ```bash
-PYTHONPATH=$HOME/unitree_rl_gym:$PWD python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
+source /opt/ros/jazzy/setup.bash
+source ~/g1_rl_env/bin/activate
+
+export PYTHONPATH=/opt/ros/jazzy/lib/python3.12/site-packages:$HOME/unitree_rl_gym:$PWD:$PYTHONPATH
+
+python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
 ```
 
 The command uses:
