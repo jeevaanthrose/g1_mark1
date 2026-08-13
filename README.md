@@ -1,31 +1,34 @@
 # G1 Mark 1 — 12-DOF Humanoid Robot
 
-A custom development project focused on the simulation and keyboard-based teleoperation of a **12-DOF Unitree G1 humanoid robot** using **MuJoCo**.
+A custom development project focused on the simulation, ROS 2 integration, LiDAR, odometry, and keyboard-based teleoperation of a **12-DOF Unitree G1 humanoid robot** using **MuJoCo**.
 
-This repository contains the custom development work for **G1 Mark 1**, including the 12-DOF robot model, MuJoCo configuration, and WASD-based teleoperation.
+G1 Mark 1 is being developed as a foundation for **SLAM, mapping, autonomous navigation, path planning, and humanoid autonomy**.
 
 ---
 
 ## 🚀 Project Overview
 
-**G1 Mark 1** is a custom humanoid robotics development project focused on building and experimenting with a **12-DOF Unitree G1 humanoid robot** in simulation.
+**G1 Mark 1** is a custom humanoid robotics development project built around a **12-DOF Unitree G1 humanoid robot** in simulation.
 
-The current implementation focuses on:
+The current system combines:
 
 * 12-DOF humanoid robot simulation
 * MuJoCo-based simulation
 * WASD keyboard teleoperation
 * Custom G1 12-DOF robot description
 * URDF and MuJoCo XML models
-* Custom deployment configuration
-* Foundation for future LiDAR integration
-* Foundation for SLAM and autonomous navigation development
+* ROS 2 Jazzy integration
+* LiDAR simulation
+* `/scan` LaserScan publishing
+* `/odom` odometry publishing
+* TF broadcasting
+* Foundation for SLAM and autonomous navigation
 
-The project is currently under active development.
+The project is under active development.
 
 ---
 
-## ✨ Current Features
+# ✨ Current Features
 
 * ✅ G1 12-DOF robot model
 * ✅ MuJoCo simulation
@@ -35,14 +38,20 @@ The project is currently under active development.
 * ✅ Custom G1 configuration
 * ✅ Custom URDF robot description
 * ✅ Custom MuJoCo XML model
-* 🔄 LiDAR integration and development
-* 🔄 SLAM implementation and improvements
+* ✅ ROS 2 Jazzy integration
+* ✅ Simulated LiDAR
+* ✅ `/scan` ROS 2 topic
+* ✅ `/odom` ROS 2 topic
+* ✅ Dynamic odometry TF
+* 🔄 SLAM implementation
+* 🔄 SLAM map improvements
 * 🔄 Autonomous navigation
-* 🔄 ROS 2 integration
+* 🔄 Path planning
+* 🔄 Obstacle avoidance
 
 ---
 
-## 📁 Repository Structure
+# 📁 Repository Structure
 
 ```text
 g1_mark1/
@@ -60,89 +69,84 @@ g1_mark1/
 │       ├── g1_12dof.urdf
 │       └── g1_12dof.xml
 │
+├── g1_mark1
 └── README.md
 ```
 
 ### Key Files
 
-| File                              | Description                                                       |
-| --------------------------------- | ----------------------------------------------------------------- |
-| `g1_12dof_wasd.py`                | Main 12-DOF G1 MuJoCo simulation and WASD teleoperation script    |
-| `g1_12dof_wasd_WORKING_BACKUP.py` | Backup of the working G1 12-DOF WASD teleoperation implementation |
-| `g1.yaml`                         | G1 deployment and simulation configuration                        |
-| `g1_12dof.xml`                    | MuJoCo XML model description of the G1 12-DOF robot               |
-| `g1_12dof.urdf`                   | URDF description of the G1 12-DOF robot                           |
+| File                              | Description                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------ |
+| `g1_mark1`                        | One-command G1 Mark 1 launcher                                                       |
+| `g1_12dof_wasd.py`                | Main G1 MuJoCo simulation, WASD teleoperation, LiDAR, odometry and ROS 2 integration |
+| `g1_12dof_wasd_WORKING_BACKUP.py` | Backup of the working G1 WASD implementation                                         |
+| `g1.yaml`                         | G1 deployment and simulation configuration                                           |
+| `g1_12dof.xml`                    | MuJoCo model description                                                             |
+| `g1_12dof.urdf`                   | URDF robot description                                                               |
 
 ---
 
-## 🛠️ Requirements
+# 🛠️ Requirements
 
 The project requires:
 
 * Ubuntu Linux
 * Python 3
 * Python virtual environment
+* ROS 2 Jazzy
 * MuJoCo
 * NumPy
 * PyTorch
 * PyYAML
 * Unitree `legged_gym` framework
 
-The project was developed and tested using a Python virtual environment named:
+The project uses the Python environment:
 
 ```text
 g1_rl_env
 ```
 
-The custom G1 Mark 1 code is maintained separately from the underlying Unitree framework.
+The underlying Unitree framework is maintained separately from this repository.
 
 ---
 
-## 🔗 Base Framework
+# 🔗 Base Framework
 
-G1 Mark 1 uses the **Unitree RL Gym framework** as the underlying robotics and reinforcement-learning environment.
+G1 Mark 1 uses the **Unitree RL Gym** framework as the underlying robotics and reinforcement-learning environment.
 
-The official framework is available here:
-
-**Official Unitree RL Gym Repository**
+Official repository:
 
 https://github.com/unitreerobotics/unitree_rl_gym
 
-This repository contains the **custom G1 Mark 1 development work** built using the underlying framework.
-
-The official Unitree repository is not included in this repository. Users should obtain the required framework separately.
+The Unitree RL Gym framework provides the `legged_gym` dependency required by the G1 Mark 1 deployment.
 
 ---
 
 # ⚙️ Setup
 
-## 1. Clone the Official Unitree RL Gym Framework
-
-Clone the official framework:
+## 1. Clone Unitree RL Gym
 
 ```bash
+cd ~
 git clone https://github.com/unitreerobotics/unitree_rl_gym.git
 ```
 
-The default location used in this project is:
+The expected location is:
 
 ```text
 ~/unitree_rl_gym
 ```
 
-The `legged_gym` package required by the G1 Mark 1 deployment script is provided by this framework.
-
 ---
 
-## 2. Clone the G1 Mark 1 Repository
-
-Clone this repository:
+## 2. Clone G1 Mark 1
 
 ```bash
+cd ~
 git clone https://github.com/jeevaanthrose/g1_mark1.git
 ```
 
-The default project location used in this documentation is:
+The expected project location is:
 
 ```text
 ~/g1_mark1
@@ -150,90 +154,161 @@ The default project location used in this documentation is:
 
 ---
 
-## 3. Activate the Python Environment
+## 3. Python Environment
 
-Activate the environment used for the project:
+Create or use the project environment:
+
+```text
+g1_rl_env
+```
+
+Activate it:
 
 ```bash
 source ~/g1_rl_env/bin/activate
 ```
 
-Verify that the environment is active:
+Verify:
 
 ```bash
 which python
 ```
 
-The terminal should show the Python interpreter associated with the `g1_rl_env` environment.
-
 ---
 
-# 🚀 Running G1 Mark 1
+## 4. ROS 2 Jazzy
 
-Navigate to the G1 Mark 1 project:
-
-```bash
-cd ~/g1_mark1
-```
-
-Activate the Python environment:
-
-```bash
-source ~/g1_rl_env/bin/activate
-```
-
-Run the G1 12-DOF MuJoCo simulation with WASD teleoperation:
+The launcher automatically loads:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
-source ~/g1_rl_env/bin/activate
+```
 
-export PYTHONPATH=/opt/ros/jazzy/lib/python3.12/site-packages:$HOME/unitree_rl_gym:$PWD:$PYTHONPATH
+ROS 2 Jazzy must therefore be installed on the system.
+
+---
+
+# 🚀 One-Command Launch
+
+The main feature of the current G1 Mark 1 setup is the **one-command launcher**.
+
+After the initial setup, simply run:
+
+```bash
+g1_mark1
+```
+
+The launcher automatically:
+
+1. Enters `~/g1_mark1`
+2. Activates `g1_rl_env`
+3. Loads ROS 2 Jazzy
+4. Configures `PYTHONPATH`
+5. Configures GLFW for X11
+6. Starts the G1 12-DOF MuJoCo simulation
+
+The complete workflow becomes:
+
+```text
+g1_mark1
+    │
+    ▼
+~/g1_mark1
+    │
+    ▼
+g1_rl_env
+    │
+    ▼
+ROS 2 Jazzy
+    │
+    ▼
+PYTHONPATH
+    │
+    ▼
+GLFW / X11
+    │
+    ▼
+G1 12-DOF MuJoCo
+```
+
+No manual `cd`, environment activation, ROS setup, or Python command is required after the launcher is configured.
+
+---
+
+# 🔧 Launcher Configuration
+
+The `g1_mark1` launcher performs the following setup:
+
+```bash
+cd "$HOME/g1_mark1"
+
+source "$HOME/g1_rl_env/bin/activate"
+
+source /opt/ros/jazzy/setup.bash
+
+export PYTHONPATH="$HOME/unitree_rl_gym:$HOME/g1_mark1:$PYTHONPATH"
+
+export GLFW_PLATFORM=x11
 
 python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
 ```
 
-The command uses:
-
-```text
-~/g1_mark1
-        │
-        └── Your custom G1 Mark 1 code
-
-~/unitree_rl_gym
-        │
-        └── Unitree framework and legged_gym dependency
-```
-
-The `PYTHONPATH` configuration allows the custom G1 Mark 1 project to access the required `legged_gym` package from the official Unitree RL Gym framework.
+The launcher is intended to provide a consistent startup environment for G1 Mark 1.
 
 ---
 
-## 🖥️ Expected Result
+# 🐛 GLFW / X11
 
-After successfully launching the script, the **MuJoCo simulation window** should open with the **G1 12-DOF humanoid robot** loaded.
+The current simulation uses:
 
-The robot can then be controlled using the WASD keyboard teleoperation interface.
-
-A successful run should result in:
-
-```text
-G1 12-DOF Humanoid Robot
-        │
-        ▼
-MuJoCo Simulation
-        │
-        ▼
-WASD Keyboard Teleoperation
+```bash
+export GLFW_PLATFORM=x11
 ```
 
-> **Note:** The exact terminal output may vary depending on the current implementation and configuration. The main indication of successful execution is that the MuJoCo simulation window launches and the G1 humanoid robot is displayed.
+This is included in the launcher to provide the required GLFW/X11 configuration for the current development environment.
+
+If the graphical environment changes, this configuration may need to be adjusted.
+
+---
+
+# 🖥️ Expected Result
+
+After running:
+
+```bash
+g1_mark1
+```
+
+the MuJoCo simulation window should open with the **G1 12-DOF humanoid robot**.
+
+The system provides keyboard-based teleoperation together with simulated sensor and ROS 2 data.
+
+Expected architecture:
+
+```text
+G1 12-DOF
+    │
+    ▼
+MuJoCo Simulation
+    │
+    ├──────────────► WASD Teleoperation
+    │
+    ├──────────────► LiDAR
+    │                    │
+    │                    ▼
+    │                  /scan
+    │
+    └──────────────► Odometry
+                         │
+                         ▼
+                       /odom
+```
 
 ---
 
 # 🎮 WASD Teleoperation
 
-Once the MuJoCo simulation is running, use the keyboard to control the robot.
+Once the simulation is running:
 
 | Key | Action        |
 | --- | ------------- |
@@ -242,46 +317,157 @@ Once the MuJoCo simulation is running, use the keyboard to control the robot.
 | `A` | Move Left     |
 | `D` | Move Right    |
 
-The robot responds to keyboard commands through the custom G1 Mark 1 WASD teleoperation implementation.
+The commands are handled by the custom G1 Mark 1 teleoperation implementation.
+
+---
+
+# 🤖 ROS 2 Integration
+
+G1 Mark 1 currently includes ROS 2 integration for simulated sensor and robot-state data.
+
+## ROS 2 Topics
+
+### LiDAR
+
+```text
+/scan
+```
+
+Message type:
+
+```text
+sensor_msgs/msg/LaserScan
+```
+
+The simulated LiDAR publishes LaserScan data for future perception and SLAM development.
+
+### Odometry
+
+```text
+/odom
+```
+
+Message type:
+
+```text
+nav_msgs/msg/Odometry
+```
+
+The simulation publishes odometry information representing the robot's simulated motion.
+
+---
+
+# 🔄 TF
+
+The current implementation provides TF broadcasting for the robot.
+
+The system includes:
+
+```text
+odom
+  │
+  ▼
+pelvis
+  │
+  ▼
+lidar_link
+```
+
+The odometry transform is dynamically updated during simulation.
+
+The LiDAR transform is provided as a static transform.
+
+This TF structure is intended to support future ROS 2 SLAM and navigation integration.
+
+---
+
+# 📡 LiDAR
+
+G1 Mark 1 includes a simulated LiDAR system inside the MuJoCo environment.
+
+The LiDAR data is published through:
+
+```text
+/scan
+```
+
+with:
+
+```text
+sensor_msgs/msg/LaserScan
+```
+
+The LiDAR subsystem is currently being developed as the perception foundation for:
+
+* SLAM
+* Mapping
+* Obstacle detection
+* Navigation
+* Path planning
+
+---
+
+# 🧭 Odometry
+
+The simulation publishes robot odometry through:
+
+```text
+/odom
+```
+
+using:
+
+```text
+nav_msgs/msg/Odometry
+```
+
+The odometry system is used as a foundation for integrating:
+
+* SLAM
+* Localization
+* Navigation
+* Path planning
 
 ---
 
 # 🧠 System Architecture
 
-The current G1 Mark 1 system is structured as follows:
+The current G1 Mark 1 architecture is:
 
 ```text
-                 G1 MARK 1
-                     │
-                     ▼
-          Custom 12-DOF G1 Model
-                     │
-                     ▼
-             MuJoCo Simulation
-                     │
-                     ▼
-          Custom WASD Teleoperation
-                     │
-          ┌──────────┼──────────┐
-          │          │          │
-          ▼          ▼          ▼
-          W          A          D
-       Forward      Left      Right
-          │
-          ▼
-          S
-       Backward
+                  G1 MARK 1
+                      │
+                      ▼
+             Custom 12-DOF G1
+                      │
+                      ▼
+              MuJoCo Simulation
+                      │
+          ┌───────────┼───────────┐
+          │           │           │
+          ▼           ▼           ▼
+        WASD        LiDAR       Odometry
+          │           │           │
+          ▼           ▼           ▼
+       Motion       /scan       /odom
+                      │
+                      ▼
+                    SLAM
+                      │
+                      ▼
+                  Mapping
+                      │
+                      ▼
+             Autonomous Navigation
 ```
-
-The project is designed as a foundation for integrating additional perception and autonomy capabilities.
 
 ---
 
 # 🤖 Robot Description
 
-The G1 Mark 1 repository contains custom 12-DOF robot descriptions in two formats.
+G1 Mark 1 contains custom 12-DOF robot descriptions.
 
-### MuJoCo Model
+## MuJoCo Model
 
 ```text
 src/g1_description/g1_12dof.xml
@@ -292,43 +478,49 @@ Used for:
 * MuJoCo simulation
 * Robot dynamics
 * Joint configuration
+* Sensor configuration
 * Simulation environment
 
-### URDF Model
+## URDF Model
 
 ```text
 src/g1_description/g1_12dof.urdf
 ```
 
-Used as the robot description for future robotics and ROS-based integration.
+Used as the robot description for ROS-based robotics development and future integration.
 
 ---
 
 # 🔬 Development Roadmap
 
-The project is under active development.
-
 ## Completed
 
-* [x] G1 12-DOF robot model
-* [x] MuJoCo simulation
-* [x] WASD keyboard teleoperation
-* [x] Custom G1 deployment configuration
-* [x] Custom URDF robot description
-* [x] Custom MuJoCo XML model
-* [x] Clean standalone G1 Mark 1 repository
+* ✅ G1 12-DOF robot model
+* ✅ MuJoCo simulation
+* ✅ WASD keyboard teleoperation
+* ✅ Forward/backward movement
+* ✅ Left/right movement
+* ✅ Custom G1 deployment configuration
+* ✅ Custom URDF robot description
+* ✅ Custom MuJoCo XML model
+* ✅ Standalone G1 Mark 1 repository
+* ✅ ROS 2 Jazzy integration
+* ✅ Simulated LiDAR
+* ✅ `/scan` LaserScan publishing
+* ✅ `/odom` Odometry publishing
+* ✅ Dynamic odometry TF
+* ✅ One-command G1 simulation launcher
 
 ## In Development
 
-* [ ] LiDAR integration
-* [ ] SLAM implementation
-* [ ] SLAM map improvements
-* [ ] Autonomous navigation
-* [ ] ROS 2 integration
-* [ ] Path planning
-* [ ] Obstacle avoidance
-* [ ] Navigation stack integration
-* [ ] Extended humanoid autonomy
+* 🔄 SLAM implementation
+* 🔄 SLAM map improvements
+* 🔄 Localization
+* 🔄 Autonomous navigation
+* 🔄 Path planning
+* 🔄 Obstacle avoidance
+* 🔄 Navigation stack integration
+* 🔄 Extended humanoid autonomy
 
 ---
 
@@ -336,45 +528,56 @@ The project is under active development.
 
 **Project:** G1 Mark 1
 
+**Robot:** Unitree G1
+
+**Degrees of Freedom:** 12-DOF
+
 **Current Milestone:**
 
-> **Working 12-DOF G1 Humanoid Robot with WASD Teleoperation in MuJoCo**
+> **Working 12-DOF G1 Humanoid Robot with MuJoCo Simulation, WASD Teleoperation, LiDAR, Odometry, and ROS 2 Integration**
 
 **Status:** Active Development
 
-The current focus is on improving the robot simulation, sensor integration, SLAM capabilities, and autonomous navigation pipeline.
+The current development focus is on improving:
+
+* LiDAR perception
+* Odometry
+* SLAM
+* Mapping
+* Localization
+* Autonomous navigation
 
 ---
 
 # 🧪 Development Environment
 
-The project was developed and tested using:
-
 ```text
 Operating System : Ubuntu Linux
+ROS Version      : ROS 2 Jazzy
 Python Environment: g1_rl_env
 Robot            : Unitree G1
 Degrees of Freedom: 12-DOF
 Simulator        : MuJoCo
 Control          : WASD Keyboard Teleoperation
 Framework        : Unitree RL Gym / legged_gym
+ROS Topics       : /scan, /odom
 ```
 
 ---
 
 # 🔗 Project Dependencies
 
-G1 Mark 1 is designed to work with the following external framework:
-
-### Unitree RL Gym
+## Unitree RL Gym
 
 Official repository:
 
 https://github.com/unitreerobotics/unitree_rl_gym
 
-The Unitree RL Gym repository provides the underlying `legged_gym` framework used by the G1 Mark 1 deployment script.
+The Unitree RL Gym framework provides the underlying `legged_gym` environment used by G1 Mark 1.
 
-Please refer to the official repository for the framework installation requirements and documentation.
+The official framework is maintained separately from this repository.
+
+Users should refer to the official repository for framework installation requirements and documentation.
 
 ---
 
@@ -403,7 +606,7 @@ Areas of interest:
 
 This project builds upon the work of **Unitree Robotics** and the open-source robotics community.
 
-Special acknowledgement to the **Unitree RL Gym** project, which provides the underlying framework used in the development of G1 Mark 1.
+Special acknowledgement to the **Unitree RL Gym** project, which provides the underlying framework used in G1 Mark 1.
 
 Official repository:
 
@@ -419,9 +622,7 @@ This repository contains custom development work for the G1 Mark 1 project and r
 
 The underlying Unitree RL Gym framework is maintained separately by its original authors.
 
-Please refer to the official Unitree RL Gym repository and its applicable license for the licensing terms of the underlying framework:
-
-https://github.com/unitreerobotics/unitree_rl_gym
+Please refer to the official Unitree RL Gym repository and its applicable license for the licensing terms of the underlying framework.
 
 Users are responsible for complying with the licenses and terms of any external dependencies used with this project.
 
@@ -429,32 +630,38 @@ Users are responsible for complying with the licenses and terms of any external 
 
 # ⭐ Future Vision
 
-The long-term goal of G1 Mark 1 is to develop a more capable humanoid robotics platform combining:
+The long-term goal of G1 Mark 1 is to develop a more capable humanoid robotics platform combining simulation, perception, mapping, localization, and autonomous navigation.
 
 ```text
-Humanoid Robot
-      │
-      ▼
-Sensor Integration
-      │
-      ├── LiDAR
-      ├── IMU
-      └── Other Sensors
-      │
-      ▼
-SLAM
-      │
-      ▼
-Environment Mapping
-      │
-      ▼
-Autonomous Navigation
-      │
-      ▼
-Path Planning
-      │
-      ▼
-Humanoid Autonomous System
+                  Humanoid Robot
+                        │
+                        ▼
+                 Sensor Integration
+                        │
+             ┌──────────┼──────────┐
+             │          │          │
+           LiDAR       IMU      Other Sensors
+             │
+             ▼
+            SLAM
+             │
+             ▼
+       Environment Mapping
+             │
+             ▼
+          Localization
+             │
+             ▼
+    Autonomous Navigation
+             │
+             ▼
+        Path Planning
+             │
+             ▼
+      Obstacle Avoidance
+             │
+             ▼
+     Humanoid Autonomous System
 ```
 
-The project will continue evolving toward advanced perception, mapping, navigation, and autonomous humanoid robotics.
+G1 Mark 1 will continue evolving toward advanced perception, mapping, navigation, and autonomous humanoid robotics.
