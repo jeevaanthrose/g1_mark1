@@ -10,6 +10,7 @@ import yaml
 import rclpy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import TransformStamped
+from nav_msgs.msg import Odometry
 from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
 
 from legged_gym import LEGGED_GYM_ROOT_DIR
@@ -320,6 +321,7 @@ if __name__ == "__main__":
     rclpy.init(args=None)
     ros_node = rclpy.create_node("g1_mujoco_lidar")
     scan_pub = ros_node.create_publisher(LaserScan, "/scan", 10)
+    odom_pub = ros_node.create_publisher(Odometry, "/odom", 10)
     tf_broadcaster = TransformBroadcaster(ros_node)
 
     # Permanent static TF: pelvis -> lidar_link
@@ -415,8 +417,9 @@ if __name__ == "__main__":
             # Dynamic TF: odom -> pelvis
             # ------------------------------------------------
 
+            stamp = ros_node.get_clock().now().to_msg()
             odom_tf = TransformStamped()
-            odom_tf.header.stamp = ros_node.get_clock().now().to_msg()
+            odom_tf.header.stamp = stamp
             odom_tf.header.frame_id = "odom"
             odom_tf.child_frame_id = "pelvis"
 
@@ -434,6 +437,22 @@ if __name__ == "__main__":
 
             tf_broadcaster.sendTransform(odom_tf)
 
+            odom_msg = Odometry()
+            odom_msg.header.stamp = stamp
+            odom_msg.header.frame_id = "odom"
+            odom_msg.child_frame_id = "pelvis"
+
+            odom_msg.pose.pose.position.x = float(d.qpos[0])
+            odom_msg.pose.pose.position.y = float(d.qpos[1])
+            odom_msg.pose.pose.position.z = float(d.qpos[2])
+
+            odom_msg.pose.pose.orientation.x = float(d.qpos[4])
+            odom_msg.pose.pose.orientation.y = float(d.qpos[5])
+            odom_msg.pose.pose.orientation.z = float(d.qpos[6])
+            odom_msg.pose.pose.orientation.w = float(d.qpos[3])
+
+            odom_pub.publish(odom_msg)
+
             # ------------------------------------------------
             # LIDAR sensor data
             # ------------------------------------------------
@@ -450,11 +469,11 @@ if __name__ == "__main__":
 
                 # Publish LiDAR as ROS 2 LaserScan
                 scan = LaserScan()
-                scan.header.stamp = ros_node.get_clock().now().to_msg()
+                scan.header.stamp = stamp
                 scan.header.frame_id = "lidar_link"
                 scan.angle_min = 0.0
                 scan.angle_max = 2.0 * np.pi
-                scan.angle_increment = (2.0 * np.pi) / 90.0
+                scan.angle_increment = (2.0 * np.pi) / 180.0
                 scan.time_increment = 0.0
                 scan.scan_time = 0.02
                 scan.range_min = MIN_RANGE

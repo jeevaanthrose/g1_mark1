@@ -1,0 +1,8 @@
+#!/bin/bash
+cd "$HOME/g1_mark1" || exit 1
+source "$HOME/g1_rl_env/bin/activate"
+source /opt/ros/jazzy/setup.bash
+export PYTHONPATH="$HOME/unitree_rl_gym:$HOME/g1_mark1:$PYTHONPATH"
+export GLFW_PLATFORM=x11
+
+python deploy/deploy_mujoco/g1_12dof_wasd.py g1.yaml
